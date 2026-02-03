@@ -1,5 +1,6 @@
 from prefect import flow, task
 import random
+import time
 
 from prefect.futures import as_completed
 from prefect.logging import get_run_logger
@@ -10,11 +11,12 @@ def get_customer_ids() -> list[str]:
     # Fetch customer IDs from a database or API
     return [f"customer{n}" for n in random.choices(range(5000), k=300)]
 
-@task
+@task(tags=["process-customer"])
 def process_customer(customer_id: str) -> str:
     # Process a single customer
     logger = get_run_logger()
     logger.info(f"Processing customer {customer_id}")
+    time.sleep(random.randint(1, 50)/ 10)
     return f"Processed {customer_id}"
 
 @flow
