@@ -1,0 +1,14 @@
+[project]
+name = "quickstart"
+version = "0.1.0"
+description = "A repo for getting started with Prefect."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "prefect",
+    "prefect-cloud",
+]
+
+[project.scripts]
+quickstart-01-demo = "01_getting_started:main"
+
