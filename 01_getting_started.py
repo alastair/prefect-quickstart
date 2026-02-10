@@ -1,10 +1,20 @@
 from prefect import flow, task
 import random
 import time
+import sentry_sdk
 
 from prefect.futures import as_completed
 from prefect.logging import get_run_logger
 
+
+def setup_sentry():
+    sentry_sdk.init(
+        dsn="https://5b6b9638894cd3d9ec0404245dcacb74@o1072865.ingest.us.sentry.io/4510860673810432",
+        # Add data like request headers and IP for users,
+        # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+        send_default_pii=True,
+        traces_sample_rate=1.0,
+    )
 
 @task
 def get_customer_ids() -> list[str]:
@@ -21,6 +31,7 @@ def process_customer(customer_id: str) -> str:
 
 @flow
 def main() -> list[str]:
+    setup_sentry()
     logger = get_run_logger()
     customer_ids = get_customer_ids()
     # Map the process_customer task across all customer IDs\
