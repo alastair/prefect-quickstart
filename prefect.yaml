@@ -1,0 +1,34 @@
+# Generic metadata about this project
+name: alastair-prefect-quickstart
+prefect-version: 3.6.15
+
+# build section allows you to manage and build docker images
+build: null
+
+# push section allows you to manage if and how this project is uploaded to remote locations
+push: null
+
+# pull section allows you to provide instructions for cloning this project in remote locations
+pull:
+  - prefect.deployments.steps.git_clone:
+      repository: https://github.com/alastair/prefect-quickstart.git
+      branch: main
+      access_token: null
+      id: clone-step
+      credentials: "{{ prefect.blocks.github-credentials.github }}"
+  - prefect.deployments.steps.pip_install_requirements:
+      directory: "{{ clone-step.directory }}"
+      requirements_file: requirements.txt
+      stream_output: True
+
+# the deployments section allows you to provide configuration for deploying flows
+deployments:
+- name: alastair-prefect-quickstart-01-demo
+  flow_name: 01_getting_started
+  entrypoint: 01_getting_started:main
+  schedule: {}
+  job_variables:
+    env:
+      PREFECT_LOGGING_EXTRA_LOGGERS=httpx
+  work_pool:
+    name: default

@@ -2,16 +2,19 @@ from prefect import flow, task
 import random
 import time
 import sentry_sdk
+import logging
 
 from prefect.futures import as_completed
 from prefect.logging import get_run_logger
 
 
 def setup_sentry():
+    httpx_logger = logging.getLogger("httpx")
+    httpx_logger.setLevel(logging.INFO)
     logger = get_run_logger()
     logger.info("Setting up Sentry")
     sentry_sdk.init(
-        dsn="https://983ff9aae6b147ce65161da073d05404@logserver.mtg.upf.edu/23",
+        dsn="https://5b6b9638894cd3d9ec0404245dcacb74@o1072865.ingest.us.sentry.io/4510860673810432",
         # Add data like request headers and IP for users,
         # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
         send_default_pii=True,
