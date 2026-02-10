@@ -27,10 +27,9 @@ deployments:
   flow_name: 01_getting_started
   entrypoint: 01_getting_started:main
   schedule: {}
-  job_variables:
-    env:
-      PREFECT_LOGGING_EXTRA_LOGGERS: httpx
-      PREFECT_LOGGING_LOGGERS_PREFECT_TASK_RUNS_LEVEL: WARNING
-      PREFECT_LOGGING_LOGGERS_PREFECT_FLOW_RUNS_LEVEL: WARNING
   work_pool:
     name: default
+    job_variables:
+      env:
+        PREFECT_LOGGING_LOGGERS_PREFECT_TASK_RUNS_LEVEL: WARNING
+        PREFECT_LOGGING_LOGGERS_PREFECT_FLOW_RUNS_LEVEL: WARNING
