@@ -32,7 +32,8 @@ def process_customer(customer_id: str) -> str:
     # Process a single customer
     logger = get_run_logger()
     logger.info(f"Processing customer {customer_id}")
-    time.sleep(random.randint(1, 50)/ 10)
+    # time.sleep(random.randint(1, 50)/ 10)
+    time.sleep(4)
     return f"Processed {customer_id}"
 
 @flow
