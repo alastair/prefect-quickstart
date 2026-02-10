@@ -27,7 +27,7 @@ def get_customer_ids() -> list[str]:
     # Fetch customer IDs from a database or API
     return [f"customer{n}" for n in random.choices(range(5000), k=300)]
 
-@task(tags=["process-customer"])
+@task
 def process_customer(customer_id: str) -> str:
     # Process a single customer
     logger = get_run_logger()
