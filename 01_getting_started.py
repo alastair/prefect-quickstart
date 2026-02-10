@@ -7,6 +7,8 @@ import logging
 from prefect.futures import as_completed
 from prefect.logging import get_run_logger
 
+mylogger = logging.getLogger("mylogger")
+mylogger.setLevel(logging.INFO)
 
 def setup_sentry():
     httpx_logger = logging.getLogger("httpx")
@@ -27,11 +29,11 @@ def get_customer_ids() -> list[str]:
     # Fetch customer IDs from a database or API
     return [f"customer{n}" for n in random.choices(range(5000), k=300)]
 
-@task
+@task(tags=["never-seen-this-tag-before-in-my-life-officer"])
 def process_customer(customer_id: str) -> str:
     # Process a single customer
     # logger = get_run_logger()
-    # logger.info(f"Processing customer {customer_id}")
+    mylogger.info(f"Processing customer {customer_id}")
     # time.sleep(random.randint(1, 50)/ 10)
     time.sleep(4)
     return f"Processed {customer_id}"
@@ -39,7 +41,8 @@ def process_customer(customer_id: str) -> str:
 @flow
 def main() -> list[str]:
     setup_sentry()
-    logger = get_run_logger()
+    # logger = get_run_logger()
+    mylogger.info("Starting main flow")
     customer_ids = get_customer_ids()
     # Map the process_customer task across all customer IDs\
     futures = []
@@ -50,7 +53,7 @@ def main() -> list[str]:
     for future in as_completed(futures):
         results.append(future.result())
 
-    logger.info(f"Processed {len(results)} customers")
+    mylogger.info(f"Processed {len(results)} customers")
     return results
 
 
