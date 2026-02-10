@@ -8,6 +8,8 @@ from prefect.logging import get_run_logger
 
 
 def setup_sentry():
+    logger = get_run_logger()
+    logger.info("Setting up Sentry")
     sentry_sdk.init(
         dsn="https://5b6b9638894cd3d9ec0404245dcacb74@o1072865.ingest.us.sentry.io/4510860673810432",
         # Add data like request headers and IP for users,
