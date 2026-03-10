@@ -7,7 +7,7 @@ from prefect.client.schemas import FlowRun
 from prefect import get_client
 from prefect.deployments import run_deployment
 from prefect.logging import get_run_logger
-from prefect.runtime import get_run_context
+from prefect.context import get_run_context
 from helper import wait_for_flows_to_finish
 
 def setup_sentry():
