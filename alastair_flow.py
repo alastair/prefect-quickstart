@@ -4,8 +4,10 @@ import sentry_sdk
 import logging
 
 from prefect.client.schemas import FlowRun
+from prefect import get_client
 from prefect.deployments import run_deployment
 from prefect.logging import get_run_logger
+from prefect.runtime import get_run_context
 from helper import wait_for_flows_to_finish
 
 def setup_sentry():
@@ -21,10 +23,18 @@ def setup_sentry():
     )
 
 
+def spin_some_api_calls():
+    context = get_run_context()
+    flow_run_id = context.flow_run.id
+    with get_client(sync_client=True) as client:
+        for i in range(20):
+            client.read_flow_run(flow_run_id)
+
 @task
 def subflow_task(argument: str):
     logger = get_run_logger()
     logger.info(f"Subflow task {argument} (starting)")
+    spin_some_api_calls()
     time.sleep(20)
     if argument == "6":
         logger.info("Special case subflow 6, going to crash")
