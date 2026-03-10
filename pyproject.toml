@@ -1,3 +1,4 @@
+
 [project]
 name = "quickstart"
 version = "0.1.0"
@@ -7,6 +8,7 @@ requires-python = ">=3.10"
 dependencies = [
     "prefect",
     "prefect-cloud",
+    "sentry-sdk>=2.54.0",
 ]
 
 [project.scripts]

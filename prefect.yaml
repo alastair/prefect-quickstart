@@ -1,6 +1,6 @@
 # Generic metadata about this project
 name: alastair-prefect-quickstart
-prefect-version: 3.6.15
+prefect-version: 3.6.21
 
 # build section allows you to manage and build docker images
 build: null
@@ -16,16 +16,29 @@ pull:
       access_token: null
       id: clone-step
       credentials: "{{ prefect.blocks.github-credentials.github }}"
-  - prefect.deployments.steps.pip_install_requirements:
+  - prefect.deployments.steps.run_shell_script:
       directory: "{{ clone-step.directory }}"
-      requirements_file: requirements.txt
+      script: uv pip install --system -r requirements.txt
       stream_output: True
+
+#pull:
+#- prefect.deployments.steps.set_working_directory:
+#    directory: /Users/alastair/code/contract/analogygroup/prefect-quickstart
 
 # the deployments section allows you to provide configuration for deploying flows
 deployments:
-- name: alastair-prefect-quickstart-01-demo
-  flow_name: 01_getting_started
-  entrypoint: 01_getting_started:main
+- name: main_mytest
+  entrypoint: alastair_flow:main
+  schedule: {}
+  work_pool:
+    name: default
+    job_variables:
+      env:
+        PREFECT_LOGGING_EXTRA_LOGGERS: httpx,prefect._internal,mylogger
+        PREFECT_LOGGING_LOGGERS_PREFECT_TASK_RUNS_LEVEL: INFO
+        PREFECT_LOGGING_LOGGERS_PREFECT_FLOW_RUNS_LEVEL: INFO
+- name: subflow_mytest
+  entrypoint: alastair_flow:my_subflow
   schedule: {}
   work_pool:
     name: default
