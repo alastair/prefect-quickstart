@@ -26,7 +26,7 @@ def setup_sentry():
 def spin_some_api_calls():
     flow_run_id = runtime.flow_run.id
     with get_client(sync_client=True) as client:
-        for i in range(20):
+        for i in range(100):
             client.read_flow_run(flow_run_id)
 
 @task
