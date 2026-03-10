@@ -7,7 +7,7 @@ from prefect.client.schemas import FlowRun
 from prefect import get_client
 from prefect.deployments import run_deployment
 from prefect.logging import get_run_logger
-from prefect.context import get_run_context
+from prefect import runtime
 from helper import wait_for_flows_to_finish
 
 def setup_sentry():
@@ -24,8 +24,7 @@ def setup_sentry():
 
 
 def spin_some_api_calls():
-    context = get_run_context()
-    flow_run_id = context.flow_run.id
+    flow_run_id = runtime.flow_run.id
     with get_client(sync_client=True) as client:
         for i in range(20):
             client.read_flow_run(flow_run_id)
